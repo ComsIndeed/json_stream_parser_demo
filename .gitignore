@@ -1,0 +1,100 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+*.pdb
+*.dll
+*.so
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Visual Studio Code related
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Xcode related
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/Flutter.xcframework
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.fvm/flutter_sdk
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Android related
+/android/.gradle/
+/android/.idea/
+/android/app/debug/
+/android/app/profile/
+/android/app/release/
+/android/app/outputs/
+/android/local.properties
+
+# iOS/macOS related
+**/ios/Pods/
+**/ios/Podfile.lock
+**/macos/Pods/
+**/macos/Podfile.lock
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/macos/Flutter/Flutter.framework
+**/macos/Flutter/Flutter.podspec
+
+# Linux related
+/linux/flutter/ephemeral/
+
+# Windows related
+/windows/flutter/ephemeral/
+windows/flutter/generated_plugins.cmake
+
+# Web related
+/web/packages
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Generated files
+.dart_tool/
+.flutter_plugins
+.flutter_plugins_dependencies
+.packages
+.env
+.env.local
+
+# Misc
+*.swp
+*~
+.vscode/.ropeproject/
+.rougefiles
+
+# Exceptions to the above rules.
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
