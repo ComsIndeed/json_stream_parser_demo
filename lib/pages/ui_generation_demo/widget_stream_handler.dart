@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:json_stream_parser/classes/json_stream_parser.dart';
 import 'package:json_stream_parser/json_stream_parser.dart';
 
-class NoteWidgetHandler with ChangeNotifier {
+class WidgetStreamHandler with ChangeNotifier {
   String get exampleJson => jsonEncode({
     'notes': [
       {

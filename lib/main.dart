@@ -5,11 +5,37 @@ void main() {
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
   @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  ThemeMode _themeMode = ThemeMode.light;
+
+  ColorScheme get _colorScheme =>
+      ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent);
+
+  void _toggleThemeMode() {
+    setState(() {
+      _themeMode = _themeMode == ThemeMode.light
+          ? ThemeMode.dark
+          : ThemeMode.light;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: Homepage());
+    return MaterialApp(
+      themeMode: _themeMode,
+      darkTheme: ThemeData.dark().copyWith(colorScheme: _colorScheme),
+      theme: ThemeData().copyWith(colorScheme: _colorScheme),
+      home: Homepage(
+        onThemeToggle: _toggleThemeMode,
+        isDarkMode: _themeMode == ThemeMode.dark,
+      ),
+    );
   }
 }

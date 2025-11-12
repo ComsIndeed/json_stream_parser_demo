@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_markdown_plus: ^1.0.5
+  google_fonts: ^6.3.2
   json_stream_parser:
     git:
       url: https://github.com/ComsIndeed/json_stream_parser_dart.git
