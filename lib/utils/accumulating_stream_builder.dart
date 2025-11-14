@@ -18,35 +18,39 @@ class AccumulatingStreamBuilder extends StatefulWidget {
 }
 
 class _AccumulatingStreamBuilderState extends State<AccumulatingStreamBuilder> {
-  late Stream<String> accumulatedStream;
-  late StreamController<String> _controller;
+  String _accumulated = '';
+  StreamSubscription<String>? _subscription;
 
   @override
   void initState() {
     super.initState();
-    _controller = StreamController<String>();
-    String accumulated = '';
-
-    widget.stream.listen(
+    _subscription = widget.stream.listen(
       (chunk) {
-        accumulated += chunk;
-        _controller.add(accumulated);
+        setState(() {
+          _accumulated += chunk;
+        });
       },
-      onError: (error) => _controller.addError(error),
-      onDone: () => _controller.close(),
+      onError: (error) {
+        // Handle error if needed
+      },
+      onDone: () {
+        // Stream is done
+      },
     );
-
-    accumulatedStream = _controller.stream;
   }
 
   @override
   void dispose() {
-    _controller.close();
+    _subscription?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(stream: accumulatedStream, builder: widget.builder);
+    final snapshot = AsyncSnapshot<String>.withData(
+      ConnectionState.active,
+      _accumulated,
+    );
+    return widget.builder(context, snapshot);
   }
 }
