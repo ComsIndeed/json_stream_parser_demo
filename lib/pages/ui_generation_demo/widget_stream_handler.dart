@@ -72,7 +72,7 @@ class WidgetStreamHandler with ChangeNotifier {
                   "widgetName": "listTile",
                   "title": "Apples",
                   "subtitle": "Fresh Red Apples - \$3.99",
-                  "leadingIcon": 57517,
+                  // "leadingIcon": 57517,  // Disabled for tree-shaking
                 }
               },
               {
@@ -83,7 +83,7 @@ class WidgetStreamHandler with ChangeNotifier {
                   "widgetName": "listTile",
                   "title": "Bread",
                   "subtitle": "Whole Wheat - \$2.49",
-                  "leadingIcon": 58732,
+                  // "leadingIcon": 58732,  // Disabled for tree-shaking
                 }
               },
               {
@@ -94,7 +94,7 @@ class WidgetStreamHandler with ChangeNotifier {
                   "widgetName": "listTile",
                   "title": "Milk",
                   "subtitle": "Organic 2% - \$4.99",
-                  "leadingIcon": 59129,
+                  // "leadingIcon": 59129,  // Disabled for tree-shaking
                 }
               },
               {
@@ -280,16 +280,17 @@ class WidgetStreamHandler with ChangeNotifier {
         return StreamingListTile(
           title: map['title'] as String?,
           subtitle: map['subtitle'] as String?,
-          leadingIcon: _parseIconData(map['leadingIcon']),
+          // leadingIcon: _parseIconData(map['leadingIcon']),  // Disabled for tree-shaking
+          leadingIcon: null, // Placeholder - re-enable dynamic icons if needed
         );
 
-      case 'icon':
-        final iconCode = map['icon'] as int?;
-        if (iconCode != null) {
-          return StreamingIcon(
-              icon: IconData(iconCode, fontFamily: 'MaterialIcons'));
-        }
-        return null;
+      // case 'icon':  // Disabled for tree-shaking - dynamic IconData not supported
+      //   final iconCode = map['icon'] as int?;
+      //   if (iconCode != null) {
+      //     return StreamingIcon(
+      //         icon: IconData(iconCode, fontFamily: 'MaterialIcons'));
+      //   }
+      //   return null;
 
       case 'divider':
         return StreamingDivider();
@@ -387,12 +388,13 @@ class WidgetStreamHandler with ChangeNotifier {
     }
   }
 
-  IconData? _parseIconData(dynamic value) {
-    if (value is int) {
-      return IconData(value, fontFamily: 'MaterialIcons');
-    }
-    return null;
-  }
+  // Disabled for tree-shaking - dynamic IconData not supported in web builds
+  // IconData? _parseIconData(dynamic value) {
+  //   if (value is int) {
+  //     return IconData(value, fontFamily: 'MaterialIcons');
+  //   }
+  //   return null;
+  // }
 
   void reset() {
     _streamKey++;
