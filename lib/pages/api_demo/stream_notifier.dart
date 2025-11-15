@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:json_stream_parser/classes/json_stream_parser.dart';
+import 'package:llm_json_stream/classes/json_stream_parser.dart';
 
 class StreamNotifier extends ChangeNotifier {
   Stream<String>? _currentStream;

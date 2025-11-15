@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:json_stream_parser/classes/json_stream_parser.dart';
-import 'package:json_stream_parser/classes/property_stream.dart';
+import 'package:llm_json_stream/classes/json_stream_parser.dart';
+import 'package:llm_json_stream/classes/property_stream.dart';
 
 class TagsListView extends StatefulWidget {
   const TagsListView({
@@ -135,9 +135,9 @@ class _TagsListViewState extends State<TagsListView> {
                                 ),
                               ),
                             ).animate().scaleXY(
-                              begin: 0.2,
-                              curve: Curves.easeOutBack,
-                            );
+                                  begin: 0.2,
+                                  curve: Curves.easeOutBack,
+                                );
                           },
                         ),
                 ),

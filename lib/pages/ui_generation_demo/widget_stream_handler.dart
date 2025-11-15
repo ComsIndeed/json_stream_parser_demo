@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:json_stream_parser/classes/json_stream_parser.dart';
-import 'package:json_stream_parser/json_stream_parser.dart';
+import 'package:llm_json_stream/classes/json_stream_parser.dart';
+import 'package:llm_json_stream/json_stream_parser.dart';
 import '../../utils/stream_text_in_chunks.dart' as local_utils;
 import 'streaming_widget_builder.dart';
 

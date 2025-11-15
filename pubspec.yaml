@@ -12,11 +12,8 @@ dependencies:
   flutter_animate: ^4.5.2
   flutter_markdown_plus: ^1.0.5
   google_fonts: ^6.3.2
-  json_stream_parser:
-    git:
-      url: https://github.com/ComsIndeed/json_stream_parser_dart.git
-      ref: c38827c639f12f1d7d2fa054335273071fe52a6b
   provider: ^6.1.5+1
+  llm_json_stream: ^0.1.0
   google_generative_ai: 0.4.5
 
 dev_dependencies:

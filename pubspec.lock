@@ -147,15 +147,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.2"
-  json_stream_parser:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: c38827c639f12f1d7d2fa054335273071fe52a6b
-      resolved-ref: c38827c639f12f1d7d2fa054335273071fe52a6b
-      url: "https://github.com/ComsIndeed/json_stream_parser_dart.git"
-    source: git
-    version: "1.0.0"
   leak_tracker:
     dependency: transitive
     description:
@@ -188,6 +179,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.1"
+  llm_json_stream:
+    dependency: "direct main"
+    description:
+      name: llm_json_stream
+      sha256: "9c953c2dfe40e4f001889c2967263ff12efdc67290f52042cd458ccec518c47f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   markdown:
     dependency: transitive
     description:
