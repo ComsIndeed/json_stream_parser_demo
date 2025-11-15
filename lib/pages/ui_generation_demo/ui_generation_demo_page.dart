@@ -228,8 +228,7 @@ class _UiGenerationDemoPageState extends State<UiGenerationDemoPage> {
                                   styleSheet: MarkdownStyleSheet(
                                     code: GoogleFonts.robotoMono(
                                       fontSize: 14,
-                                      backgroundColor:
-                                          Colors.green.withAlpha(30),
+                                      backgroundColor: Colors.green.shade100,
                                     ),
                                   ),
                                 ),

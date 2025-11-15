@@ -30,24 +30,24 @@ class _ApiDemoPageState extends State<ApiDemoPage> {
   }
 
   String get exampleApiResponse => jsonEncode({
-    "name": "Sample Item",
-    "description":
-        "This is a very long description that could potentially span multiple lines and contain a lot of information about the item, including its features, benefits, and usage.", // long description value
-    "tags": [
-      // list of strings
-      "sample tag 1 with some extra info",
-      "sample tag 2 with more details",
-      "sample tag 3 that is a bit longer",
-    ],
-    "details": {
-      // nested map
-      "color": "red",
-      "size": "large",
-      "weight": "1.5kg",
-      "material": "plastic",
-    },
-    "status": "active", // ending string key-value pair
-  });
+        "name": "Sample Item",
+        "description":
+            "This is a very long description that could potentially span multiple lines and contain a lot of information about the item, including its features, benefits, and usage.", // long description value
+        "tags": [
+          // list of strings
+          "sample tag 1 with some extra info",
+          "sample tag 2 with more details",
+          "sample tag 3 that is a bit longer",
+        ],
+        "details": {
+          // nested map
+          "color": "red",
+          "size": "large",
+          "weight": "1.5kg",
+          "material": "plastic",
+        },
+        "status": "active", // ending string key-value pair
+      });
 
   void _runStream() {
     // Create stream controller to manually control when stream starts
@@ -140,11 +140,17 @@ class _ApiDemoPageState extends State<ApiDemoPage> {
                       width: sizes.width * 0.25,
                       height: sizes.height * 0.7,
                       child: Card(
-                        surfaceTintColor: Colors.white,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surfaceContainerLowest,
+                        surfaceTintColor: Colors.transparent,
                         shape: RoundedSuperellipseBorder(
                           borderRadius: BorderRadius.circular(24),
                           side: BorderSide(
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withAlpha(25),
                             width: 1,
                           ),
                         ),
@@ -237,14 +243,15 @@ class _ApiDemoPageState extends State<ApiDemoPage> {
                                                   return Padding(
                                                     padding:
                                                         const EdgeInsets.all(
-                                                          16.0,
-                                                        ),
-                                                    child: SingleChildScrollView(
+                                                      16.0,
+                                                    ),
+                                                    child:
+                                                        SingleChildScrollView(
                                                       child:
                                                           _buildFormattedJson(
-                                                            context,
-                                                            snapshot.data ?? "",
-                                                          ),
+                                                        context,
+                                                        snapshot.data ?? "",
+                                                      ),
                                                     ),
                                                   );
                                                 } else if (snapshot.hasError) {
@@ -280,7 +287,7 @@ class _ApiDemoPageState extends State<ApiDemoPage> {
                                 styleSheet: MarkdownStyleSheet(
                                   code: GoogleFonts.robotoMono(
                                     fontSize: 14,
-                                    backgroundColor: Colors.green.withAlpha(30),
+                                    backgroundColor: Colors.green.shade100,
                                   ),
                                 ),
                               ),

@@ -25,7 +25,7 @@ class StreamingText extends StreamableWidget {
   }
 }
 
-/// Streaming Scaffold widget
+/// Streaming Scaffold widget (simulated for display within another widget)
 class StreamingScaffold extends StreamableWidget {
   final String? pageId;
   final bool showAppBar;
@@ -44,14 +44,27 @@ class StreamingScaffold extends StreamableWidget {
     return AnimatedOpacity(
       opacity: isComplete ? 1.0 : 0.7,
       duration: const Duration(milliseconds: 300),
-      child: Scaffold(
-        appBar: showAppBar
-            ? AppBar(
-                title: Text(appBarTitle ?? ''),
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-              )
-            : null,
-        body: child?.build(context, isComplete: isComplete) ?? const SizedBox(),
+      child: Column(
+        children: [
+          if (showAppBar)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
+              child: Text(
+                appBarTitle ?? '',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
+              ),
+            ),
+          Expanded(
+            child: child?.build(context, isComplete: isComplete) ??
+                const SizedBox(),
+          ),
+        ],
       ),
     );
   }
@@ -92,16 +105,19 @@ class StreamingColumn extends StreamableWidget {
 
   @override
   Widget build(BuildContext context, {bool isComplete = true}) {
-    return Column(
-      mainAxisAlignment: mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment,
-      children: children.map((child) {
-        return AnimatedScale(
-          scale: isComplete ? 1.0 : 0.95,
-          duration: const Duration(milliseconds: 300),
-          child: child.build(context, isComplete: isComplete),
-        );
-      }).toList(),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: mainAxisAlignment,
+        crossAxisAlignment: crossAxisAlignment,
+        children: children.map((child) {
+          return AnimatedScale(
+            scale: isComplete ? 1.0 : 0.95,
+            duration: const Duration(milliseconds: 300),
+            child: child.build(context, isComplete: isComplete),
+          );
+        }).toList(),
+      ),
     );
   }
 }

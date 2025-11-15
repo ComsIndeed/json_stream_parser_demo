@@ -37,9 +37,10 @@ class ApiDocView extends StatelessWidget {
         stream: stream!,
         builder: (context, snapshot) {
           return Card(
+            color: Colors.green.shade100,
             shape: RoundedSuperellipseBorder(
               borderRadius: BorderRadius.circular(8),
-              side: const BorderSide(color: Colors.blueAccent, width: 1),
+              side: const BorderSide(color: Colors.green, width: 1),
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -68,9 +69,10 @@ class ApiDocView extends StatelessWidget {
         future: future,
         builder: (context, snapshot) {
           return Card(
+            color: Colors.purple.shade100,
             shape: RoundedSuperellipseBorder(
               borderRadius: BorderRadius.circular(8),
-              side: const BorderSide(color: Colors.blueAccent, width: 1),
+              side: const BorderSide(color: Colors.purple, width: 1),
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -101,7 +103,9 @@ class ApiDocView extends StatelessWidget {
       title: Text(
         title,
         style: GoogleFonts.robotoMono().copyWith(
-          backgroundColor: Colors.green.withAlpha(50),
+          backgroundColor: type == ApiDocOutputType.stream
+              ? Colors.green.withAlpha(50)
+              : Colors.purple.withAlpha(50),
           fontSize: 16,
         ),
       ),

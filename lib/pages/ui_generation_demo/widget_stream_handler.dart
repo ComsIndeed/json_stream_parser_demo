@@ -140,42 +140,46 @@ class WidgetStreamHandler with ChangeNotifier {
     _currentStream = controller.stream;
     _parser = JsonStreamParser(controller.stream);
 
+    // Start parsing BEFORE streaming (it will wait for data)
+    _buildWidgetsFromStream();
+
     // Start streaming after a delay
     Future.delayed(const Duration(milliseconds: 50), () async {
       // Stream the JSON text
-      local_utils
+      await local_utils
           .streamTextInChunks(
         text: exampleJson,
         chunkSize: chunkSize,
         interval: Duration(milliseconds: intervalMs),
       )
-          .listen(
-        (chunk) {
-          _accumulatedJson += chunk;
-          controller.add(chunk);
-          notifyListeners();
-        },
-        onDone: () {
-          controller.close();
-        },
-        onError: (error) => controller.addError(error),
-      );
+          .forEach((chunk) {
+        _accumulatedJson += chunk;
+        controller.add(chunk);
+        notifyListeners();
+      });
 
-      // Parse and build widgets
-      await _buildWidgetsFromStream();
+      // Close the controller after streaming is done
+      controller.close();
     });
   }
 
   Future<void> _buildWidgetsFromStream() async {
-    if (_parser == null) return;
+    if (_parser == null) {
+      print('Parser is null!');
+      return;
+    }
 
     try {
+      print('Starting to parse uiRoot...');
       final uiRootMap = await _parser!.getMapProperty('uiRoot').future;
+      print('Got uiRoot map: $uiRootMap');
       _rootWidget = await _buildWidgetFromMap(uiRootMap);
+      print('Built root widget: $_rootWidget');
       _isBuilding = false;
       notifyListeners();
     } catch (e) {
       print('Error building widgets: $e');
+      print('Stack trace: ${StackTrace.current}');
       _isBuilding = false;
       notifyListeners();
     }
