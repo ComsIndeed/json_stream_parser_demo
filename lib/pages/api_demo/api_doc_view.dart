@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:json_stream_parser_demo/utils/accumulating_stream_builder.dart';
 
@@ -42,12 +43,22 @@ class ApiDocView extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                snapshot.data ?? "",
-                style: const TextStyle(fontSize: 24),
+              child: Text.rich(
+                TextSpan(
+                  children: [
+                    WidgetSpan(
+                      child: Icon(
+                        Icons.chevron_right,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    TextSpan(text: snapshot.data ?? ""),
+                  ],
+                ),
+                style: const TextStyle(fontSize: 20),
               ),
             ),
-          );
+          ).animate().scaleXY(begin: 0.2, curve: Curves.easeOutBack);
         },
       );
     } else if (type == ApiDocOutputType.future && future != null) {
@@ -63,12 +74,22 @@ class ApiDocView extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                snapshot.data ?? "",
-                style: const TextStyle(fontSize: 24),
+              child: Text.rich(
+                TextSpan(
+                  children: [
+                    WidgetSpan(
+                      child: Icon(
+                        Icons.chevron_right,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    TextSpan(text: snapshot.data ?? ""),
+                  ],
+                ),
+                style: const TextStyle(fontSize: 20),
               ),
             ),
-          );
+          ).animate().scaleXY(begin: 0.2, curve: Curves.easeOutBack);
         },
       );
     } else {
@@ -76,8 +97,14 @@ class ApiDocView extends StatelessWidget {
     }
 
     return ListTile(
-      leading: leading,
-      title: Text(title, style: GoogleFonts.robotoMono()),
+      // leading: leading,
+      title: Text(
+        title,
+        style: GoogleFonts.robotoMono().copyWith(
+          backgroundColor: Colors.green.withAlpha(50),
+          fontSize: 16,
+        ),
+      ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [Text(subtitle), output],

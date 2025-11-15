@@ -13,7 +13,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  ThemeMode _themeMode = ThemeMode.dark;
+  ThemeMode _themeMode = ThemeMode.light;
 
   ColorScheme get _colorScheme => ColorScheme.fromSeed(
     seedColor: Colors.teal,
@@ -33,6 +33,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       themeMode: _themeMode,
       darkTheme: ThemeData.dark().copyWith(colorScheme: _colorScheme),
       theme: ThemeData().copyWith(colorScheme: _colorScheme),
