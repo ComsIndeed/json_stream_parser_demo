@@ -123,6 +123,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.3.2"
+  google_generative_ai:
+    dependency: "direct main"
+    description:
+      name: google_generative_ai
+      sha256: eac2338da8f223af2930b83da11fc56dab5369653db172902031e4c54132a17a
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.5"
   http:
     dependency: transitive
     description:
@@ -143,8 +151,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
-      resolved-ref: "5eaa520151d6d3b2f020606c3d015e120ff48d3d"
+      ref: c38827c639f12f1d7d2fa054335273071fe52a6b
+      resolved-ref: c38827c639f12f1d7d2fa054335273071fe52a6b
       url: "https://github.com/ComsIndeed/json_stream_parser_dart.git"
     source: git
     version: "1.0.0"

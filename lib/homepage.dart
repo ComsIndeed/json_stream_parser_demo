@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:json_stream_parser_demo/pages/api_demo/api_demo_page.dart';
+import 'package:json_stream_parser_demo/pages/live_chat_demo/live_chat_demo_page.dart';
 
 class Homepage extends StatefulWidget {
   final VoidCallback onThemeToggle;
@@ -83,14 +84,5 @@ class UiGenerationDemoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(child: Text('Page 3'));
-  }
-}
-
-class LiveChatDemoPage extends StatelessWidget {
-  const LiveChatDemoPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Page 2'));
   }
 }
