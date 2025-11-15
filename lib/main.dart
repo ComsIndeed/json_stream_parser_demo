@@ -13,20 +13,18 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  ThemeMode _themeMode = ThemeMode.light;
+  ThemeMode _themeMode = ThemeMode.dark;
 
   ColorScheme get _colorScheme => ColorScheme.fromSeed(
-    seedColor: Colors.teal,
-    brightness: _themeMode == ThemeMode.light
-        ? Brightness.light
-        : Brightness.dark,
-  );
+        seedColor: Colors.teal,
+        brightness:
+            _themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
+      );
 
   void _toggleThemeMode() {
     setState(() {
-      _themeMode = _themeMode == ThemeMode.light
-          ? ThemeMode.dark
-          : ThemeMode.light;
+      _themeMode =
+          _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     });
   }
 

@@ -1,0 +1,62 @@
+<!-- EVERY NAMESPACE IS CAMELCASED -->
+
+[ ] UI Generation
+
+
+[ ] Script Handler
+
+
+[ ] States
+
+<!-- WIDGETS -->
+
+Interface Widget {
+    "objectType": "widget"
+    "widgetName": String,
+    ... other params
+}
+
+[ ] Basic Widgets
+    [ ] Scaffold
+        - String pageId
+        - Bool? showAppBar
+        - String? appBarTitle
+        - List<Widget>? drawerItems
+        - Widget child
+    [ ] ListView
+        - List<Widget> children
+    [ ] Column
+        - List<Widget> children
+    [ ] Row
+        - List<Widget> children
+    [ ] Text
+        - String text
+    [ ] MarkdownText
+        - String text
+    [ ] Card
+        - Widget child
+    [ ] Button
+        - Style: Filled, Elevated (default), Outline, Text, Dangerous
+        - DartCode? onTap
+        - Widget child
+    [ ] TextField
+        - Style: Outlined (default), Underlined, No Outline
+        - String hintText
+        - DartCode? onChange
+        - DartCode? onSubmit
+
+[ ] Common Widgets
+    [ ] ListTile
+        - String? title
+        - String? subtitle
+        - DartCode? onTap
+    [ ] 
+
+<!-- MISCELANIOUS -->
+[ ] Icon support
+
+
+<!-- OTHER PLANS AND NOTES -->
+[ ] May want to make it possible to add, remove, replace, wrap, etc. on the existing widgets to allow for editing
+    [ ] May consider just making the UI definitions be done in series of imperative stuff, but may not be optimal
+[ ] Need to think about how to handle states

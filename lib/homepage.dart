@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:json_stream_parser_demo/pages/api_demo/api_demo_page.dart';
 import 'package:json_stream_parser_demo/pages/live_chat_demo/live_chat_demo_page.dart';
+import 'package:json_stream_parser_demo/pages/ui_generation_demo/ui_generation_demo_page.dart';
 
 class Homepage extends StatefulWidget {
   final VoidCallback onThemeToggle;
@@ -43,7 +44,7 @@ class _HomepageState extends State<Homepage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    FilledButton.icon(
+                    ElevatedButton.icon(
                       label: const Text('Previous'),
                       onPressed: () => _pageController.previousPage(
                         duration: Durations.medium1,
@@ -59,7 +60,7 @@ class _HomepageState extends State<Homepage> {
                       ),
                     ),
                     Spacer(),
-                    FilledButton.icon(
+                    ElevatedButton.icon(
                       label: const Text('Next'),
                       onPressed: () => _pageController.nextPage(
                         duration: Durations.medium1,
@@ -75,14 +76,5 @@ class _HomepageState extends State<Homepage> {
         ),
       ),
     );
-  }
-}
-
-class UiGenerationDemoPage extends StatelessWidget {
-  const UiGenerationDemoPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Page 3'));
   }
 }
