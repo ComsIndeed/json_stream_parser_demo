@@ -3,6 +3,7 @@ import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:json_stream_parser_demo/pages/live_chat_demo/chat_provider.dart';
 import 'package:json_stream_parser_demo/pages/live_chat_demo/top_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class LiveChatDemoPage extends StatefulWidget {
   const LiveChatDemoPage({super.key});
@@ -97,6 +98,8 @@ class _LiveChatDemoPageState extends State<LiveChatDemoPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveBreakpoints.of(context).isMobile;
+
     return ChangeNotifierProvider(
       create: (context) => ChatProvider(),
       builder: (context, widget) => Center(
@@ -106,7 +109,9 @@ class _LiveChatDemoPageState extends State<LiveChatDemoPage> {
               children: [
                 Text(
                   'Live Chat Demo',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: isMobile
+                      ? Theme.of(context).textTheme.headlineSmall
+                      : Theme.of(context).textTheme.headlineMedium,
                 ),
                 Spacer(),
                 IconButton(
@@ -121,6 +126,8 @@ class _LiveChatDemoPageState extends State<LiveChatDemoPage> {
                     TopBar(),
                     Expanded(
                         child: ListView.builder(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: isMobile ? 4 : 16, vertical: 8),
                       itemCount:
                           Provider.of<ChatProvider>(context).messages.length,
                       itemBuilder: (context, index) {
@@ -130,8 +137,10 @@ class _LiveChatDemoPageState extends State<LiveChatDemoPage> {
                           alignment: chatMessage.role == ChatMessageRole.user
                               ? Alignment.centerRight
                               : Alignment.centerLeft,
-                          child: SizedBox(
-                            width: 512,
+                          child: Container(
+                            constraints: BoxConstraints(
+                              maxWidth: isMobile ? double.infinity : 512,
+                            ),
                             child: Card(
                               color: chatMessage.role == ChatMessageRole.user
                                   ? Theme.of(context)
@@ -147,7 +156,7 @@ class _LiveChatDemoPageState extends State<LiveChatDemoPage> {
                               shape: RoundedSuperellipseBorder(
                                   borderRadius: BorderRadius.circular(18)),
                               child: Padding(
-                                padding: const EdgeInsets.all(12.0),
+                                padding: EdgeInsets.all(isMobile ? 8.0 : 12.0),
                                 child: MarkdownBody(data: chatMessage.message),
                               ),
                             ),
@@ -156,15 +165,15 @@ class _LiveChatDemoPageState extends State<LiveChatDemoPage> {
                       },
                     )),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(isMobile ? 4.0 : 8.0),
                       child: SizedBox(
                         width: double.infinity,
-                        height: 120,
+                        height: isMobile ? 100 : 120,
                         child: Card(
                           color:
                               Theme.of(context).colorScheme.secondaryContainer,
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(isMobile ? 4.0 : 8.0),
                             child: Column(
                               children: [
                                 Row(
@@ -181,6 +190,8 @@ class _LiveChatDemoPageState extends State<LiveChatDemoPage> {
                                         decoration: InputDecoration(
                                             border: InputBorder.none,
                                             hintText: 'Type your message here'),
+                                        style: TextStyle(
+                                            fontSize: isMobile ? 14 : 16),
                                       ),
                                     ),
                                     IconButton.filled(
@@ -196,9 +207,16 @@ class _LiveChatDemoPageState extends State<LiveChatDemoPage> {
                                 Spacer(),
                                 Row(
                                   children: [
-                                    TextButton(
-                                        onPressed: _showModelSelectionModal,
-                                        child: Text(modelName))
+                                    Expanded(
+                                      child: TextButton(
+                                          onPressed: _showModelSelectionModal,
+                                          child: Text(
+                                            modelName,
+                                            style: TextStyle(
+                                                fontSize: isMobile ? 11 : 14),
+                                            overflow: TextOverflow.ellipsis,
+                                          )),
+                                    ),
                                   ],
                                 )
                               ],
@@ -211,7 +229,7 @@ class _LiveChatDemoPageState extends State<LiveChatDemoPage> {
                 ),
               )),
             ),
-            SizedBox(height: 40),
+            SizedBox(height: isMobile ? 60 : 40),
           ],
         ),
       ),

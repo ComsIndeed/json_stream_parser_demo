@@ -4,10 +4,14 @@ import 'package:json_stream_parser_demo/pages/api_demo/stream_notifier.dart';
 import 'package:json_stream_parser_demo/pages/api_demo/tags_list_view.dart';
 
 class ApiView extends StatelessWidget {
-  const ApiView({super.key, required StreamNotifier streamNotifier})
-    : _streamNotifier = streamNotifier;
+  const ApiView(
+      {super.key,
+      required StreamNotifier streamNotifier,
+      required this.isDesktop})
+      : _streamNotifier = streamNotifier;
 
   final StreamNotifier _streamNotifier;
+  final bool isDesktop;
 
   @override
   Widget build(BuildContext context) {
@@ -47,45 +51,68 @@ class ApiView extends StatelessWidget {
               future: parser?.getStringProperty("description").future,
               streamKey: streamKey,
             ),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TagsListView(parser: parser, streamKey: streamKey),
-                  ),
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        ApiDocView(
-                          leading: const Icon(Icons.code),
-                          title:
-                              'parser.getStringProperty("details.color").stream;',
-                          streamKey: streamKey,
-                          stream: parser
-                              ?.getStringProperty("details.color")
-                              .stream,
-                          subtitle:
-                              'Provides the "color" property nested within the "details" object as a stream.',
-                          type: ApiDocOutputType.stream,
-                        ),
-                        ApiDocView(
-                          leading: const Icon(Icons.code_off),
-                          title:
-                              'await parser.getStringProperty("details.weight").future;',
-                          streamKey: streamKey,
-                          future: parser
-                              ?.getStringProperty("details.weight")
-                              .future,
-                          subtitle:
-                              'Provides the "weight" property nested within the "details" object as a future.',
-                          type: ApiDocOutputType.future,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+            if (!isDesktop) ...[
+              TagsListView(parser: parser, streamKey: streamKey),
+              ApiDocView(
+                leading: const Icon(Icons.code),
+                title: 'parser.getStringProperty("details.color").stream;',
+                streamKey: streamKey,
+                stream: parser?.getStringProperty("details.color").stream,
+                subtitle:
+                    'Provides the "color" property nested within the "details" object as a stream.',
+                type: ApiDocOutputType.stream,
               ),
-            ),
+              ApiDocView(
+                leading: const Icon(Icons.code_off),
+                title:
+                    'await parser.getStringProperty("details.weight").future;',
+                streamKey: streamKey,
+                future: parser?.getStringProperty("details.weight").future,
+                subtitle:
+                    'Provides the "weight" property nested within the "details" object as a future.',
+                type: ApiDocOutputType.future,
+              ),
+            ],
+            if (isDesktop)
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TagsListView(parser: parser, streamKey: streamKey),
+                    ),
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          ApiDocView(
+                            leading: const Icon(Icons.code),
+                            title:
+                                'parser.getStringProperty("details.color").stream;',
+                            streamKey: streamKey,
+                            stream: parser
+                                ?.getStringProperty("details.color")
+                                .stream,
+                            subtitle:
+                                'Provides the "color" property nested within the "details" object as a stream.',
+                            type: ApiDocOutputType.stream,
+                          ),
+                          ApiDocView(
+                            leading: const Icon(Icons.code_off),
+                            title:
+                                'await parser.getStringProperty("details.weight").future;',
+                            streamKey: streamKey,
+                            future: parser
+                                ?.getStringProperty("details.weight")
+                                .future,
+                            subtitle:
+                                'Provides the "weight" property nested within the "details" object as a future.',
+                            type: ApiDocOutputType.future,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
           ],
         );
       },

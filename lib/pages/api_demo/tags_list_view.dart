@@ -99,7 +99,11 @@ class _TagsListViewState extends State<TagsListView> {
                 Text(
                   'parser.getListProperty("tags", onElement: ...);',
                   style: GoogleFonts.robotoMono().copyWith(
-                    backgroundColor: Colors.green.withAlpha(50),
+                    backgroundColor: Theme.of(context)
+                        .colorScheme
+                        .primaryContainer
+                        .withAlpha(128),
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
                     fontSize: 16,
                   ),
                 ),
@@ -109,38 +113,36 @@ class _TagsListViewState extends State<TagsListView> {
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: 16),
-                Expanded(
-                  child: _tags.isEmpty
-                      ? const Center(child: Text('Press "Run Stream" to start'))
-                      : ListView.builder(
-                          itemCount: _tags.length,
-                          itemBuilder: (context, index) {
-                            return Card(
-                              shape: RoundedSuperellipseBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                side: const BorderSide(
-                                  color: Colors.blueAccent,
-                                  width: 1,
-                                ),
+                _tags.isEmpty
+                    ? const Center(child: Text('Press "Run Stream" to start'))
+                    : ListView.builder(
+                        itemCount: _tags.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            shape: RoundedSuperellipseBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              side: BorderSide(
+                                color: Theme.of(context).colorScheme.tertiary,
+                                width: 1,
                               ),
-                              margin: const EdgeInsets.symmetric(vertical: 4),
-                              child: ListTile(
-                                leading: Icon(
-                                  Icons.chevron_right,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                                title: Text(
-                                  _tags[index],
-                                  style: GoogleFonts.robotoMono(),
-                                ),
+                            ),
+                            margin: const EdgeInsets.symmetric(vertical: 4),
+                            child: ListTile(
+                              leading: Icon(
+                                Icons.chevron_right,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
-                            ).animate().scaleXY(
-                                  begin: 0.2,
-                                  curve: Curves.easeOutBack,
-                                );
-                          },
-                        ),
-                ),
+                              title: Text(
+                                _tags[index],
+                                style: GoogleFonts.robotoMono(),
+                              ),
+                            ),
+                          ).animate().scaleXY(
+                                begin: 0.2,
+                                curve: Curves.easeOutBack,
+                              );
+                        },
+                      ),
               ],
             ),
           ),

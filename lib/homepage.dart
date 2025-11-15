@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:json_stream_parser_demo/pages/api_demo/api_demo_page.dart';
 import 'package:json_stream_parser_demo/pages/live_chat_demo/live_chat_demo_page.dart';
 import 'package:json_stream_parser_demo/pages/ui_generation_demo/ui_generation_demo_page.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class Homepage extends StatefulWidget {
   final VoidCallback onThemeToggle;
@@ -22,12 +23,14 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveBreakpoints.of(context).isMobile;
+
     return Scaffold(
       body: SizedBox.expand(
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.all(32.0),
+              padding: EdgeInsets.all(isMobile ? 8.0 : 32.0),
               child: PageView(
                 controller: _pageController,
                 children: [
@@ -40,36 +43,67 @@ class _HomepageState extends State<Homepage> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton.icon(
-                      label: const Text('Previous'),
-                      onPressed: () => _pageController.previousPage(
-                        duration: Durations.medium1,
-                        curve: Curves.bounceInOut,
+                padding: EdgeInsets.all(isMobile ? 8.0 : 32.0),
+                child: isMobile
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton.filled(
+                            onPressed: () => _pageController.previousPage(
+                              duration: Durations.medium1,
+                              curve: Curves.bounceInOut,
+                            ),
+                            icon: Icon(Icons.arrow_left),
+                          ),
+                          IconButton(
+                            key: ValueKey<bool>(widget.isDarkMode),
+                            onPressed: widget.onThemeToggle,
+                            icon: Icon(
+                              widget.isDarkMode
+                                  ? Icons.light_mode
+                                  : Icons.dark_mode,
+                            ),
+                          ),
+                          IconButton.filled(
+                            onPressed: () => _pageController.nextPage(
+                              duration: Durations.medium1,
+                              curve: Curves.bounceInOut,
+                            ),
+                            icon: Icon(Icons.arrow_right),
+                          ),
+                        ],
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton.icon(
+                            label: const Text('Previous'),
+                            onPressed: () => _pageController.previousPage(
+                              duration: Durations.medium1,
+                              curve: Curves.bounceInOut,
+                            ),
+                            icon: Icon(Icons.arrow_left),
+                          ),
+                          IconButton(
+                            key: ValueKey<bool>(widget.isDarkMode),
+                            onPressed: widget.onThemeToggle,
+                            icon: Icon(
+                              widget.isDarkMode
+                                  ? Icons.light_mode
+                                  : Icons.dark_mode,
+                            ),
+                          ),
+                          Spacer(),
+                          ElevatedButton.icon(
+                            label: const Text('Next'),
+                            onPressed: () => _pageController.nextPage(
+                              duration: Durations.medium1,
+                              curve: Curves.bounceInOut,
+                            ),
+                            icon: Icon(Icons.arrow_right),
+                          ),
+                        ],
                       ),
-                      icon: Icon(Icons.arrow_left),
-                    ),
-                    IconButton(
-                      key: ValueKey<bool>(widget.isDarkMode),
-                      onPressed: widget.onThemeToggle,
-                      icon: Icon(
-                        widget.isDarkMode ? Icons.light_mode : Icons.dark_mode,
-                      ),
-                    ),
-                    Spacer(),
-                    ElevatedButton.icon(
-                      label: const Text('Next'),
-                      onPressed: () => _pageController.nextPage(
-                        duration: Durations.medium1,
-                        curve: Curves.bounceInOut,
-                      ),
-                      icon: Icon(Icons.arrow_right),
-                    ),
-                  ],
-                ),
               ),
             ),
           ],

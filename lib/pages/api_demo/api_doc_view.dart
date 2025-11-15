@@ -37,10 +37,13 @@ class ApiDocView extends StatelessWidget {
         stream: stream!,
         builder: (context, snapshot) {
           return Card(
-            color: Colors.green.shade100,
+            color: Theme.of(context).colorScheme.primaryContainer,
             shape: RoundedSuperellipseBorder(
               borderRadius: BorderRadius.circular(8),
-              side: const BorderSide(color: Colors.green, width: 1),
+              side: BorderSide(
+                color: Theme.of(context).colorScheme.primary,
+                width: 1,
+              ),
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -50,13 +53,16 @@ class ApiDocView extends StatelessWidget {
                     WidgetSpan(
                       child: Icon(
                         Icons.chevron_right,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
                     ),
                     TextSpan(text: snapshot.data ?? ""),
                   ],
                 ),
-                style: const TextStyle(fontSize: 20),
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
               ),
             ),
           ).animate().scaleXY(begin: 0.2, curve: Curves.easeOutBack);
@@ -69,10 +75,13 @@ class ApiDocView extends StatelessWidget {
         future: future,
         builder: (context, snapshot) {
           return Card(
-            color: Colors.purple.shade100,
+            color: Theme.of(context).colorScheme.secondaryContainer,
             shape: RoundedSuperellipseBorder(
               borderRadius: BorderRadius.circular(8),
-              side: const BorderSide(color: Colors.purple, width: 1),
+              side: BorderSide(
+                color: Theme.of(context).colorScheme.secondary,
+                width: 1,
+              ),
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -82,13 +91,17 @@ class ApiDocView extends StatelessWidget {
                     WidgetSpan(
                       child: Icon(
                         Icons.chevron_right,
-                        color: Theme.of(context).colorScheme.primary,
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
                       ),
                     ),
                     TextSpan(text: snapshot.data ?? ""),
                   ],
                 ),
-                style: const TextStyle(fontSize: 20),
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Theme.of(context).colorScheme.onSecondaryContainer,
+                ),
               ),
             ),
           ).animate().scaleXY(begin: 0.2, curve: Curves.easeOutBack);
@@ -104,8 +117,8 @@ class ApiDocView extends StatelessWidget {
         title,
         style: GoogleFonts.robotoMono().copyWith(
           backgroundColor: type == ApiDocOutputType.stream
-              ? Colors.green.withAlpha(50)
-              : Colors.purple.withAlpha(50),
+              ? Theme.of(context).colorScheme.primaryContainer.withAlpha(128)
+              : Theme.of(context).colorScheme.secondaryContainer.withAlpha(128),
           fontSize: 16,
         ),
       ),
