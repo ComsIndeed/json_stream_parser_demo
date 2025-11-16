@@ -6,6 +6,12 @@ A Flutter web project demonstrating JSON stream parsing capabilities.
 
 Visit the live demo at: **https://comsindeed.github.io/json_stream_parser_demo/**
 
+### Experimental Build
+
+Try the experimental build using native web elements (HTML renderer): **https://comsindeed.github.io/json_stream_parser_demo/native-experimental/**
+
+This build uses Flutter's HTML renderer instead of CanvasKit, providing better integration with native web elements.
+
 ## 🚀 Deployment
 
 This project automatically deploys to GitHub Pages on every push to `main`.
@@ -33,10 +39,21 @@ For detailed deployment instructions and troubleshooting, see [DEPLOYMENT.md](DE
 ### Building for Web
 
 To build for web locally:
+
+**Standard build (CanvasKit renderer):**
 ```bash
 # Windows
 .\build_web.bat
 
 # Mac/Linux
 ./build_web.sh
+```
+
+**Native experimental build (HTML renderer):**
+```bash
+# Windows
+.\build_web_native.bat
+
+# Mac/Linux
+./build_web_native.sh
 ```
