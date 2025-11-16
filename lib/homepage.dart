@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:json_stream_parser_demo/pages/api_demo/api_demo_page.dart';
-import 'package:json_stream_parser_demo/pages/live_chat_demo/live_chat_demo_page.dart';
-import 'package:json_stream_parser_demo/pages/ui_generation_demo/ui_generation_demo_page.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class Homepage extends StatefulWidget {
@@ -19,6 +17,8 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  // Original version with all pages and navigation buttons
+  /*
   final PageController _pageController = PageController();
 
   @override
@@ -107,6 +107,22 @@ class _HomepageState extends State<Homepage> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+  */
+
+  // Simplified version with only ApiDemoPage
+  @override
+  Widget build(BuildContext context) {
+    final isMobile = ResponsiveBreakpoints.of(context).isMobile;
+
+    return Scaffold(
+      body: SizedBox.expand(
+        child: Padding(
+          padding: EdgeInsets.all(isMobile ? 8.0 : 32.0),
+          child: ApiDemoPage(),
         ),
       ),
     );
