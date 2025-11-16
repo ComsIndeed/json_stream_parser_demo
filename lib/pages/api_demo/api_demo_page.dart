@@ -292,10 +292,9 @@ class _ApiDemoPageState extends State<ApiDemoPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Text(
-                        "JsonStreamParser API Demo",
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
+                      MarkdownBody(
+                          data:
+                              '# **LLM JSON Stream** API Demo\n(Please avoid changing the screen size for now)'),
                       SizedBox(height: 16),
                       SizedBox(
                         width: double.infinity,

@@ -109,15 +109,14 @@ class _TagsListViewState extends State<TagsListView> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Listens to the "tags" array and builds a list as items stream in.\n`onElement` runs immediately on the first token of a value found before it\'s even complete and parseable.',
+                  '[${_tags.length}] Listens to the "tags" array and builds a list as items stream in.\n`onElement` runs immediately on the first token of a value found before it\'s even complete and parseable.',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: 16),
                 _tags.isEmpty
                     ? const Center(child: Text('Press "Run Stream" to start'))
-                    : ListView.builder(
-                        itemCount: _tags.length,
-                        itemBuilder: (context, index) {
+                    : Column(
+                        children: _tags.map((tag) {
                           return Card(
                             shape: RoundedSuperellipseBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -133,7 +132,7 @@ class _TagsListViewState extends State<TagsListView> {
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                               title: Text(
-                                _tags[index],
+                                tag,
                                 style: GoogleFonts.robotoMono(),
                               ),
                             ),
@@ -141,7 +140,7 @@ class _TagsListViewState extends State<TagsListView> {
                                 begin: 0.2,
                                 curve: Curves.easeOutBack,
                               );
-                        },
+                        }).toList(),
                       ),
               ],
             ),
