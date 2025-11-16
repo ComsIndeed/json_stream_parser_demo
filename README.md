@@ -39,10 +39,21 @@ For detailed deployment instructions and troubleshooting, see [DEPLOYMENT.md](DE
 ### Building for Web
 
 To build for web locally:
+
+**Standard build (CanvasKit renderer):**
 ```bash
 # Windows
 .\build_web.bat
 
 # Mac/Linux
 ./build_web.sh
+```
+
+**Native experimental build (HTML renderer):**
+```bash
+# Windows
+.\build_web_native.bat
+
+# Mac/Linux
+./build_web_native.sh
 ```

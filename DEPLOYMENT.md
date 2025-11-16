@@ -52,13 +52,12 @@ You can also manually trigger either deployment:
 
 To build and test locally before pushing:
 
-**Windows (PowerShell/CMD):**
-```batch
-.\build_web.bat
-```
-
-**Mac/Linux:**
+**Standard build (CanvasKit renderer):**
 ```bash
+# Windows
+.\build_web.bat
+
+# Mac/Linux
 chmod +x build_web.sh
 ./build_web.sh
 ```
@@ -66,6 +65,21 @@ chmod +x build_web.sh
 Or manually:
 ```bash
 flutter build web --release --base-href /json_stream_parser_demo/
+```
+
+**Native experimental build (HTML renderer):**
+```bash
+# Windows
+.\build_web_native.bat
+
+# Mac/Linux
+chmod +x build_web_native.sh
+./build_web_native.sh
+```
+
+Or manually:
+```bash
+flutter build web --release --web-renderer html --base-href /json_stream_parser_demo/native-experimental/
 ```
 
 ## 📊 GitHub Pages Free Tier Limitations
@@ -140,7 +154,7 @@ The `deploy-native-experimental.yml` workflow:
 3. Both builds coexist on the same GitHub Pages site
 
 ### Testing locally
-To build the native experimental version locally:
+Use the build scripts (see section 3 above) or manually:
 ```bash
 flutter build web --release --web-renderer html --base-href /json_stream_parser_demo/native-experimental/
 ```

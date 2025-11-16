@@ -27,9 +27,13 @@ Go to **Actions** tab → **Deploy to GitHub Pages** → **Run workflow**
 
 ## Local Testing
 ```bash
-# Build locally
+# Build locally (Standard - CanvasKit)
 .\build_web.bat          # Windows
 ./build_web.sh           # Mac/Linux
+
+# Build locally (Native Experimental - HTML)
+.\build_web_native.bat   # Windows
+./build_web_native.sh    # Mac/Linux
 
 # Test the build
 cd build\web
@@ -68,8 +72,10 @@ python -m http.server 8000
 ```
 .github/workflows/deploy.yml                      ← Main deployment workflow (CanvasKit)
 .github/workflows/deploy-native-experimental.yml  ← Native experimental workflow (HTML)
-build_web.bat                                     ← Local build script (Windows)
-build_web.sh                                      ← Local build script (Mac/Linux)
+build_web.bat                                     ← Local build script (Windows) - CanvasKit
+build_web.sh                                      ← Local build script (Mac/Linux) - CanvasKit
+build_web_native.bat                              ← Local build script (Windows) - HTML
+build_web_native.sh                               ← Local build script (Mac/Linux) - HTML
 DEPLOYMENT.md                                     ← Detailed guide
 ```
 
