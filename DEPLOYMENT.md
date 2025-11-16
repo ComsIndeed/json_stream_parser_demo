@@ -4,10 +4,17 @@
 
 This repository is configured to automatically deploy to GitHub Pages whenever you push to the `main` branch.
 
-### Your Site URL
-Once deployed, your site will be available at:
+### Your Site URLs
+Once deployed, your sites will be available at:
+
+**Main site (CanvasKit renderer):**
 ```
 https://comsindeed.github.io/json_stream_parser_demo/
+```
+
+**Experimental site (HTML renderer with native web elements):**
+```
+https://comsindeed.github.io/json_stream_parser_demo/native-experimental/
 ```
 
 ## 📋 Setup Instructions
@@ -22,15 +29,23 @@ https://comsindeed.github.io/json_stream_parser_demo/
 
 ### 2. Automatic Deployment
 
-The workflow (`.github/workflows/deploy.yml`) will automatically:
-- ✅ Trigger on every push to `main` branch
-- ✅ Build your Flutter web app
-- ✅ Deploy to GitHub Pages
-- ✅ Make your site live at the URL above
+Two workflows deploy different versions automatically:
 
-You can also manually trigger the deployment:
+**Main workflow** (`.github/workflows/deploy.yml`):
+- ✅ Triggers on every push to `main` branch
+- ✅ Builds with CanvasKit renderer (default)
+- ✅ Deploys to root path
+- ✅ URL: https://comsindeed.github.io/json_stream_parser_demo/
+
+**Native Experimental workflow** (`.github/workflows/deploy-native-experimental.yml`):
+- ✅ Triggers on every push to `main` branch
+- ✅ Builds with HTML renderer (native web elements)
+- ✅ Deploys to `/native-experimental/` subdirectory
+- ✅ URL: https://comsindeed.github.io/json_stream_parser_demo/native-experimental/
+
+You can also manually trigger either deployment:
 1. Go to **Actions** tab on GitHub
-2. Click on **Deploy to GitHub Pages** workflow
+2. Select the workflow you want to run
 3. Click **Run workflow** button
 
 ### 3. Manual Local Build (Optional)
@@ -106,6 +121,29 @@ flutter build web --release --base-href /json_stream_parser_demo/
 1. Check if the workflow ran successfully in Actions tab
 2. Hard refresh your browser (Ctrl+F5 / Cmd+Shift+R)
 3. Wait a minute - GitHub Pages has a small propagation delay
+
+## 🧪 Native Experimental Build
+
+### What is it?
+The native experimental build uses Flutter's **HTML renderer** instead of the default **CanvasKit renderer**. This provides:
+
+- ✅ Better integration with native web elements (DOM)
+- ✅ Smaller initial download size
+- ✅ Better text selection and accessibility
+- ❌ Less consistent rendering across browsers
+- ❌ Potentially lower graphics performance
+
+### How it works
+The `deploy-native-experimental.yml` workflow:
+1. Builds with `--web-renderer html` flag
+2. Deploys to the `gh-pages` branch in a `native-experimental/` subdirectory
+3. Both builds coexist on the same GitHub Pages site
+
+### Testing locally
+To build the native experimental version locally:
+```bash
+flutter build web --release --web-renderer html --base-href /json_stream_parser_demo/native-experimental/
+```
 
 ## 📝 Customization
 
