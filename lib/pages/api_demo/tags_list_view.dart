@@ -86,10 +86,6 @@ class _TagsListViewState extends State<TagsListView> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        // Padding(
-        //   padding: const EdgeInsets.all(10.0),
-        //   child: Icon(Icons.list_alt),
-        // ),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(10.0),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:json_stream_parser_demo/pages/api_demo/api_view.dart';
+import 'package:json_stream_parser_demo/pages/api_demo/other_demos/other_demos_page.dart';
 import 'package:json_stream_parser_demo/pages/api_demo/stream_notifier.dart';
 import 'package:flutter/services.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -239,27 +240,40 @@ class _ApiDemoPageState extends State<ApiDemoPage> {
               ),
             ),
             SizedBox(height: 16),
-            FilledButton(
-              onPressed: _runStream,
-              child: Text.rich(
-                TextSpan(
-                  text: "Run Streams",
-                  children: [
-                    if (!isMobile)
-                      TextSpan(
-                        text: " (Spacebar)",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontStyle: FontStyle.italic,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onPrimary
-                              .withAlpha(179),
-                        ),
-                      ),
-                  ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FilledButton(
+                  onPressed: _runStream,
+                  child: Text.rich(
+                    TextSpan(
+                      text: "Run Streams",
+                      children: [
+                        if (!isMobile)
+                          TextSpan(
+                            text: " (Spacebar)",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimary
+                                  .withAlpha(179),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                SizedBox(
+                  width: 8,
+                ),
+                OutlinedButton(
+                    onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => OtherDemosPage())),
+                    child: Text("Other demos"))
+              ],
             ),
           ],
         ),
