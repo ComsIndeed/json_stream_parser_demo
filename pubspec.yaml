@@ -13,7 +13,7 @@ dependencies:
   flutter_markdown_plus: ^1.0.5
   google_fonts: ^6.3.2
   provider: ^6.1.5+1
-  llm_json_stream: ^0.1.0
+  llm_json_stream: ^0.2.0
   google_generative_ai: 0.4.5
   responsive_framework: ^1.5.1
   flutter_resizable_container: ^4.2.0

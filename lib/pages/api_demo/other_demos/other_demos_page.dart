@@ -780,9 +780,8 @@ class _ListOnElementObjectsDemo extends StatefulWidget {
 }
 
 class _ListOnElementObjectsDemoState extends State<_ListOnElementObjectsDemo> {
-  final List<Future<Map<String, dynamic>>> _itemFutures = [];
+  final List<Map<String, dynamic>> _items = [];
 
-  // TODO BUG: Objects retuned are empty
   @override
   void initState() {
     super.initState();
@@ -790,10 +789,12 @@ class _ListOnElementObjectsDemoState extends State<_ListOnElementObjectsDemo> {
       'products',
       onElement: (propertyStream, index) async {
         final mapPropertyStream = propertyStream as MapPropertyStream;
-        setState(() {
-          _itemFutures.add(mapPropertyStream.future
-              .then((value) => value as Map<String, dynamic>));
-        });
+        final map = await mapPropertyStream.future;
+        if (mounted) {
+          setState(() {
+            _items.add(map as Map<String, dynamic>);
+          });
+        }
       },
     );
   }
@@ -804,29 +805,24 @@ class _ListOnElementObjectsDemoState extends State<_ListOnElementObjectsDemo> {
       spacing: 12,
       runSpacing: 12,
       children: [
-        ..._itemFutures.asMap().entries.map((entry) {
-          return FutureBuilder<Map<String, dynamic>>(
-            future: entry.value,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return const SizedBox.shrink();
-
-              return Chip(
-                label: Text(
-                  '[${entry.key}] ${snapshot.data}',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                padding: const EdgeInsets.all(8),
-              )
-                  .animate()
-                  .fadeIn(duration: 200.ms)
-                  .scale(begin: const Offset(0.8, 0.8));
-            },
-          );
-        }),
+        ..._items.asMap().entries.map((entry) {
+          final product = entry.value;
+          final index = entry.key;
+          return Chip(
+            label: Text(
+              '[$index] $product',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            padding: const EdgeInsets.all(8),
+          )
+              .animate()
+              .fadeIn(duration: 200.ms)
+              .scale(begin: const Offset(0.8, 0.8));
+        })
       ],
     );
   }
