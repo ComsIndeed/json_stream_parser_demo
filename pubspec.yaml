@@ -17,6 +17,7 @@ dependencies:
   google_generative_ai: 0.4.5
   responsive_framework: ^1.5.1
   flutter_resizable_container: ^4.2.0
+  flutter_highlight: ^0.7.0
 
 dev_dependencies:
   flutter_test:

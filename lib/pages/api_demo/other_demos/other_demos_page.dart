@@ -4,6 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_resizable_container/flutter_resizable_container.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_highlight/flutter_highlight.dart';
+import 'package:flutter_highlight/themes/github.dart';
+import 'package:flutter_highlight/themes/dracula.dart';
 import 'package:llm_json_stream/classes/json_stream_parser.dart';
 import 'package:llm_json_stream/classes/property_stream.dart';
 import 'package:json_stream_parser_demo/utils/stream_text_in_chunks.dart';
@@ -302,8 +305,7 @@ class _OtherDemosPageState extends State<OtherDemosPage> {
                     _DemoItem(
                       key: ValueKey('demo8_$_streamKey'),
                       title: 'List onElement - String Streams',
-                      code:
-                          'parser.getListProperty("tags", onElement: ...) [Stream<String>];',
+                      code: 'parser.getListProperty("tags", onElement: ...);',
                       json:
                           '{"tags": ["flutter", "dart", "json", "streaming"]}',
                       interval: _interval,
@@ -467,16 +469,17 @@ class _DemoItemState extends State<_DemoItem> {
             ),
           ),
           const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: isDark ? Colors.grey[850] : Colors.grey[100],
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: SelectableText(
-              widget.code,
-              style: GoogleFonts.robotoMono(
-                fontSize: 16,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: SelectionArea(
+              child: HighlightView(
+                widget.code,
+                language: 'dart',
+                theme: isDark ? draculaTheme : githubTheme,
+                padding: const EdgeInsets.all(16),
+                textStyle: GoogleFonts.robotoMono(
+                  fontSize: 16,
+                ),
               ),
             ),
           ),
@@ -530,7 +533,7 @@ class _DemoItemState extends State<_DemoItem> {
             style: GoogleFonts.robotoMono(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: isDark ? Colors.white : Colors.black,
               letterSpacing: 0.5,
             ),
           ),
@@ -540,7 +543,7 @@ class _DemoItemState extends State<_DemoItem> {
               text: fullJson.substring(streamedLength),
               style: GoogleFonts.robotoMono(
                 fontSize: 16,
-                color: isDark ? Colors.grey[700] : Colors.grey[400],
+                color: isDark ? Colors.grey[600] : Colors.grey[400],
                 letterSpacing: 0.5,
               ),
             ),
@@ -569,7 +572,6 @@ class _StringFutureDemo extends StatelessWidget {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
           ),
         )
             .animate()
@@ -612,7 +614,6 @@ class _StringStreamDemoState extends State<_StringStreamDemo> {
       style: const TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        color: Colors.black,
       ),
     );
   }
@@ -668,7 +669,9 @@ class _PropertyChip extends StatelessWidget {
           label: Text(
             '$label: ${snapshot.data}',
             style: const TextStyle(
-                fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           padding: const EdgeInsets.all(8),
         )
@@ -698,7 +701,6 @@ class _NestedPropertyDemo extends StatelessWidget {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
           ),
         )
             .animate()
@@ -727,7 +729,6 @@ class _ListIndexDemo extends StatelessWidget {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
           ),
         )
             .animate()
@@ -757,7 +758,6 @@ class _ChainingDemo extends StatelessWidget {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
           ),
         )
             .animate()
@@ -814,7 +814,6 @@ class _ListOnElementObjectsDemoState extends State<_ListOnElementObjectsDemo> {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
               ),
             ),
             padding: const EdgeInsets.all(8),
@@ -884,8 +883,7 @@ class _ListOnElementStringsDemoState extends State<_ListOnElementStringsDemo> {
         return Chip(
           label: Text(
             tag,
-            style: const TextStyle(
-                fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           padding: const EdgeInsets.all(8),
         )
@@ -915,7 +913,6 @@ class _EdgeCaseMultilineDemo extends StatelessWidget {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
           ),
         )
             .animate()
@@ -944,7 +941,6 @@ class _EdgeCaseSpecialCharsDemo extends StatelessWidget {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
           ),
         )
             .animate()
