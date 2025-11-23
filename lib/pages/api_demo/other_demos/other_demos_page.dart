@@ -2,11 +2,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_resizable_container/flutter_resizable_container.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';
 import 'package:flutter_highlight/themes/dracula.dart';
+import 'package:json_stream_parser_demo/pages/api_demo/other_demos/comparison_demo_item.dart';
+import 'package:json_stream_parser_demo/pages/api_demo/other_demos/hero_demo_item.dart';
+import 'package:json_stream_parser_demo/pages/api_demo/other_demos/future_vs_stream_demo_item.dart';
 import 'package:llm_json_stream/classes/json_stream_parser.dart';
 import 'package:llm_json_stream/classes/property_stream.dart';
 import 'package:json_stream_parser_demo/utils/stream_text_in_chunks.dart';
@@ -19,12 +21,13 @@ class OtherDemosPage extends StatefulWidget {
 }
 
 class _OtherDemosPageState extends State<OtherDemosPage> {
-  bool _isDarkMode = false;
+  bool _isDarkMode = true;
   int _streamKey = 0;
   int _intervalMs = 50;
   int _chunkSize = 3;
   bool _isSliderVisible = true;
   bool _allowExpansion = false;
+  bool _showStreamButtons = true; // controls FAB visibility
   bool _startOnRebuild =
       false; // whether newly created demo items should start streaming
 
@@ -84,279 +87,291 @@ class _OtherDemosPageState extends State<OtherDemosPage> {
             title: const Text('JSON Stream Parser - Comprehensive Demos'),
             actions: [
               IconButton(
+                icon: Icon(
+                    _showStreamButtons ? Icons.toggle_on : Icons.toggle_off),
+                onPressed: () {
+                  setState(() {
+                    _showStreamButtons = !_showStreamButtons;
+                  });
+                },
+                tooltip: 'Toggle Stream Buttons',
+              ),
+              IconButton(
                 icon: Icon(_isDarkMode ? Icons.light_mode : Icons.dark_mode),
                 onPressed: _toggleTheme,
                 tooltip: 'Toggle Theme',
               ),
             ],
           ),
-          floatingActionButton: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              FloatingActionButton.extended(
-                onPressed: _runStream,
-                icon: const Icon(Icons.play_arrow),
-                label: const Text('Run Stream (Space)'),
-              ),
-              const SizedBox(height: 8),
-              FloatingActionButton.extended(
-                onPressed: _resetStream,
-                icon: const Icon(Icons.refresh),
-                label: const Text('Reset Stream (Shift+Space)'),
-              ),
-            ],
-          ),
-          body: ResizableContainer(
-            direction: Axis.horizontal,
-            children: [
-              ResizableChild(
-                  divider: ResizableDivider(color: Colors.grey[100]),
-                  child: Center()),
-              ResizableChild(
-                divider: ResizableDivider(
-                    color: Colors.grey[100], thickness: 1, padding: 32),
-                size: ResizableSize.ratio(0.8),
-                child: ListView(
-                  padding: const EdgeInsets.all(16.0),
+          floatingActionButton: _showStreamButtons
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Controls Card
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
+                    FloatingActionButton.extended(
+                      onPressed: _runStream,
+                      icon: const Icon(Icons.play_arrow),
+                      label: const Text('Run Stream (Space)'),
+                    ),
+                    const SizedBox(height: 8),
+                    FloatingActionButton.extended(
+                      onPressed: _resetStream,
+                      icon: const Icon(Icons.refresh),
+                      label: const Text('Reset Stream (Shift+Space)'),
+                    ),
+                  ],
+                )
+              : null,
+          body: ListView(
+            padding: const EdgeInsets.all(16.0),
+            children: [
+              // Controls Card
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _isSliderVisible = !_isSliderVisible;
+                          });
+                        },
+                        child: Text(
+                          "Stream Controls",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ),
+                      if (_isSliderVisible) ...[
+                        const SizedBox(height: 8),
+                        SwitchListTile(
+                          title: const Text("Allow Items to Expand"),
+                          subtitle: const Text(
+                            "When enabled, items can expand without affecting list layout",
+                          ),
+                          value: _allowExpansion,
+                          onChanged: (value) {
+                            setState(() {
+                              _allowExpansion = value;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
                           children: [
-                            TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  _isSliderVisible = !_isSliderVisible;
-                                });
-                              },
-                              child: Text(
-                                "Stream Controls",
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                            ),
-                            if (_isSliderVisible) ...[
-                              const SizedBox(height: 8),
-                              SwitchListTile(
-                                title: const Text("Allow Items to Expand"),
-                                subtitle: const Text(
-                                  "When enabled, items can expand without affecting list layout",
-                                ),
-                                value: _allowExpansion,
+                            const Text("Chunk Size:"),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Slider(
+                                value: _chunkSize.toDouble(),
+                                min: 1,
+                                max: 20,
+                                divisions: 19,
+                                label: _chunkSize.toString(),
                                 onChanged: (value) {
                                   setState(() {
-                                    _allowExpansion = value;
+                                    _chunkSize = value.toInt();
                                   });
                                 },
                               ),
-                              const SizedBox(height: 16),
-                              Row(
-                                children: [
-                                  const Text("Chunk Size:"),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Slider(
-                                      value: _chunkSize.toDouble(),
-                                      min: 1,
-                                      max: 20,
-                                      divisions: 19,
-                                      label: _chunkSize.toString(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _chunkSize = value.toInt();
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(_chunkSize.toString()),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  const Text("Interval (ms):"),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Slider(
-                                      value: _intervalMs.toDouble(),
-                                      min: 10,
-                                      max: 500,
-                                      divisions: 49,
-                                      label: _intervalMs.toString(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _intervalMs = value.toInt();
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(_intervalMs.toString()),
-                                ],
-                              ),
-                            ],
+                            ),
+                            const SizedBox(width: 8),
+                            Text(_chunkSize.toString()),
                           ],
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    _DemoItem(
-                      key: ValueKey('demo1_$_streamKey'),
-                      title: 'String Property Future',
-                      code:
-                          'await parser.getStringProperty("user.name").future;',
-                      json: '{"user": {"name": "Alice", "age": 30}}',
-                      interval: _interval,
-                      chunkSize: _chunkSize,
-                      allowExpansion: _allowExpansion,
-                      startImmediately: _startOnRebuild,
-                      builder: (parser) => _StringFutureDemo(parser: parser),
-                    ),
-                    const SizedBox(height: 32),
-                    _DemoItem(
-                      key: ValueKey('demo2_$_streamKey'),
-                      title: 'String Property Stream',
-                      code: 'parser.getStringProperty("user.email").stream;',
-                      json:
-                          '{"user": {"email": "alice@example.com", "verified": true}}',
-                      interval: _interval,
-                      chunkSize: _chunkSize,
-                      allowExpansion: _allowExpansion,
-                      startImmediately: _startOnRebuild,
-                      builder: (parser) => _StringStreamDemo(parser: parser),
-                    ),
-                    const SizedBox(height: 32),
-                    _DemoItem(
-                      key: ValueKey('demo3_$_streamKey'),
-                      title: 'Atomic Properties (Multiple Properties)',
-                      code: 'await parser.getStringProperty("name").future;\n'
-                          'await parser.getStringProperty("city").future;\n'
-                          'await parser.getStringProperty("country").future;\n'
-                          'await parser.getStringProperty("status").future;',
-                      json:
-                          '{"name": "Bob", "city": "NYC", "country": "USA", "status": "active"}',
-                      interval: _interval,
-                      chunkSize: _chunkSize,
-                      allowExpansion: _allowExpansion,
-                      startImmediately: _startOnRebuild,
-                      builder: (parser) =>
-                          _AtomicPropertiesDemo(parser: parser),
-                    ),
-                    const SizedBox(height: 32),
-                    _DemoItem(
-                      key: ValueKey('demo4_$_streamKey'),
-                      title: 'Nested Property Access',
-                      code:
-                          'await parser.getStringProperty("company.department.team.lead").future;',
-                      json:
-                          '{"company": {"department": {"team": {"lead": "Charlie", "members": 5}}}}',
-                      interval: _interval,
-                      chunkSize: _chunkSize,
-                      allowExpansion: _allowExpansion,
-                      startImmediately: _startOnRebuild,
-                      builder: (parser) => _NestedPropertyDemo(parser: parser),
-                    ),
-                    const SizedBox(height: 32),
-                    _DemoItem(
-                      key: ValueKey('demo5_$_streamKey'),
-                      title: 'List Access via Index',
-                      code:
-                          'await parser.getStringProperty("users[1].name").future;',
-                      json:
-                          '{"users": [{"name": "Alice"}, {"name": "Bob"}, {"name": "Charlie"}]}',
-                      interval: _interval,
-                      chunkSize: _chunkSize,
-                      allowExpansion: _allowExpansion,
-                      startImmediately: _startOnRebuild,
-                      builder: (parser) => _ListIndexDemo(parser: parser),
-                    ),
-                    const SizedBox(height: 32),
-                    _DemoItem(
-                      key: ValueKey('demo6_$_streamKey'),
-                      title: 'Chaining Property Getters',
-                      code:
-                          'await parser.getProperty("users[0]").getStringProperty("email").future;',
-                      json:
-                          '{"users": [{"name": "Alice", "email": "alice@example.com"}]}',
-                      interval: _interval,
-                      chunkSize: _chunkSize,
-                      allowExpansion: _allowExpansion,
-                      startImmediately: _startOnRebuild,
-                      builder: (parser) => _ChainingDemo(parser: parser),
-                    ),
-                    const SizedBox(height: 32),
-                    _DemoItem(
-                      key: ValueKey('demo7_$_streamKey'),
-                      title: 'List onElement - Object Futures',
-                      code:
-                          'parser.getListProperty("products", onElement: ...);',
-                      json:
-                          '{"products": [{"id": 1, "name": "Widget"}, {"id": 2, "name": "Gadget"}]}',
-                      interval: _interval,
-                      chunkSize: _chunkSize,
-                      allowExpansion: _allowExpansion,
-                      startImmediately: _startOnRebuild,
-                      builder: (parser) =>
-                          _ListOnElementObjectsDemo(parser: parser),
-                    ),
-                    const SizedBox(height: 32),
-                    _DemoItem(
-                      key: ValueKey('demo8_$_streamKey'),
-                      title: 'List onElement - String Streams',
-                      code: 'parser.getListProperty("tags", onElement: ...);',
-                      json:
-                          '{"tags": ["flutter", "dart", "json", "streaming"]}',
-                      interval: _interval,
-                      chunkSize: _chunkSize,
-                      allowExpansion: _allowExpansion,
-                      startImmediately: _startOnRebuild,
-                      builder: (parser) =>
-                          _ListOnElementStringsDemo(parser: parser),
-                    ),
-                    const SizedBox(height: 32),
-                    _DemoItem(
-                      key: ValueKey('demo9_$_streamKey'),
-                      title: 'Edge Case - Triple Quoted Multi-line JSON',
-                      code:
-                          'await parser.getStringProperty("config.message").future;',
-                      json: '''
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            const Text("Interval (ms):"),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Slider(
+                                value: _intervalMs.toDouble(),
+                                min: 10,
+                                max: 500,
+                                divisions: 49,
+                                label: _intervalMs.toString(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _intervalMs = value.toInt();
+                                  });
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(_intervalMs.toString()),
+                          ],
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              HeroDemoItem(
+                key: ValueKey('hero_demo_$_streamKey'),
+                interval: _interval,
+                chunkSize: _chunkSize,
+                allowExpansion: _allowExpansion,
+                startImmediately: _startOnRebuild,
+              ),
+              const SizedBox(height: 16),
+              ComparisonDemoItem(
+                key: ValueKey('comparison_demo_$_streamKey'),
+                interval: _interval,
+                chunkSize: _chunkSize,
+                allowExpansion: _allowExpansion,
+                startImmediately: _startOnRebuild,
+              ),
+              // const SizedBox(height: 16),
+              // FutureVsStreamDemoItem(
+              //   key: ValueKey('future_vs_stream_demo_$_streamKey'),
+              //   interval: _interval,
+              //   chunkSize: _chunkSize,
+              //   allowExpansion: _allowExpansion,
+              //   startImmediately: _startOnRebuild,
+              // ),
+              const SizedBox(height: 16),
+              _DemoItem(
+                key: ValueKey('demo1_$_streamKey'),
+                title: 'String Property Future',
+                code: 'await parser.getStringProperty("user.name").future;',
+                json: '{"user": {"name": "Alice", "age": 30}}',
+                interval: _interval,
+                chunkSize: _chunkSize,
+                allowExpansion: _allowExpansion,
+                startImmediately: _startOnRebuild,
+                builder: (parser) => _StringFutureDemo(parser: parser),
+              ),
+              const SizedBox(height: 32),
+              _DemoItem(
+                key: ValueKey('demo2_$_streamKey'),
+                title: 'String Property Stream',
+                code: 'parser.getStringProperty("user.email").stream;',
+                json:
+                    '{"user": {"email": "alice@example.com", "verified": true}}',
+                interval: _interval,
+                chunkSize: _chunkSize,
+                allowExpansion: _allowExpansion,
+                startImmediately: _startOnRebuild,
+                builder: (parser) => _StringStreamDemo(parser: parser),
+              ),
+              const SizedBox(height: 32),
+              _DemoItem(
+                key: ValueKey('demo3_$_streamKey'),
+                title: 'Atomic Properties (Multiple Properties)',
+                code: 'await parser.getStringProperty("name").future;\n'
+                    'await parser.getStringProperty("city").future;\n'
+                    'await parser.getStringProperty("country").future;\n'
+                    'await parser.getStringProperty("status").future;',
+                json:
+                    '{"name": "Bob", "city": "NYC", "country": "USA", "status": "active"}',
+                interval: _interval,
+                chunkSize: _chunkSize,
+                allowExpansion: _allowExpansion,
+                startImmediately: _startOnRebuild,
+                builder: (parser) => _AtomicPropertiesDemo(parser: parser),
+              ),
+              const SizedBox(height: 32),
+              _DemoItem(
+                key: ValueKey('demo4_$_streamKey'),
+                title: 'Nested Property Access',
+                code:
+                    'await parser.getStringProperty("company.department.team.lead").future;',
+                json:
+                    '{"company": {"department": {"team": {"lead": "Charlie", "members": 5}}}}',
+                interval: _interval,
+                chunkSize: _chunkSize,
+                allowExpansion: _allowExpansion,
+                startImmediately: _startOnRebuild,
+                builder: (parser) => _NestedPropertyDemo(parser: parser),
+              ),
+              const SizedBox(height: 32),
+              _DemoItem(
+                key: ValueKey('demo5_$_streamKey'),
+                title: 'List Access via Index',
+                code: 'await parser.getStringProperty("users[1].name").future;',
+                json:
+                    '{"users": [{"name": "Alice"}, {"name": "Bob"}, {"name": "Charlie"}]}',
+                interval: _interval,
+                chunkSize: _chunkSize,
+                allowExpansion: _allowExpansion,
+                startImmediately: _startOnRebuild,
+                builder: (parser) => _ListIndexDemo(parser: parser),
+              ),
+              const SizedBox(height: 32),
+              _DemoItem(
+                key: ValueKey('demo6_$_streamKey'),
+                title: 'Chaining Property Getters',
+                code:
+                    'await parser.getProperty("users[0]").getStringProperty("email").future;',
+                json:
+                    '{"users": [{"name": "Alice", "email": "alice@example.com"}]}',
+                interval: _interval,
+                chunkSize: _chunkSize,
+                allowExpansion: _allowExpansion,
+                startImmediately: _startOnRebuild,
+                builder: (parser) => _ChainingDemo(parser: parser),
+              ),
+              const SizedBox(height: 32),
+              _DemoItem(
+                key: ValueKey('demo7_$_streamKey'),
+                title: 'List onElement - Object Futures',
+                code:
+                    'parser.getListProperty("products", onElement: (property, index) => property.future);',
+                json:
+                    '{"products": [{"id": 1, "name": "Widget"}, {"id": 2, "name": "Gadget"}]}',
+                interval: _interval,
+                chunkSize: _chunkSize,
+                allowExpansion: _allowExpansion,
+                startImmediately: _startOnRebuild,
+                builder: (parser) => _ListOnElementObjectsDemo(parser: parser),
+              ),
+              const SizedBox(height: 32),
+              _DemoItem(
+                key: ValueKey('demo8_$_streamKey'),
+                title: 'List onElement - String Streams',
+                code:
+                    'parser.getListProperty("tags", onElement: (property, index) => property.stream);',
+                json: '{"tags": ["flutter", "dart", "json", "streaming"]}',
+                interval: _interval,
+                chunkSize: _chunkSize,
+                allowExpansion: _allowExpansion,
+                startImmediately: _startOnRebuild,
+                builder: (parser) => _ListOnElementStringsDemo(parser: parser),
+              ),
+              const SizedBox(height: 32),
+              _DemoItem(
+                key: ValueKey('demo9_$_streamKey'),
+                title: 'Edge Case - Triple Quoted Multi-line JSON',
+                code:
+                    'await parser.getStringProperty("config.message").future;',
+                json: '''
               {
                 "config": {
                   "message": "Hello\\nWorld",
                   "multiline": true
                 }
               }''',
-                      interval: _interval,
-                      chunkSize: _chunkSize,
-                      allowExpansion: _allowExpansion,
-                      startImmediately: _startOnRebuild,
-                      builder: (parser) =>
-                          _EdgeCaseMultilineDemo(parser: parser),
-                    ),
-                    const SizedBox(height: 32),
-                    _DemoItem(
-                      key: ValueKey('demo10_$_streamKey'),
-                      title: 'Edge Case - Special Characters',
-                      code:
-                          'await parser.getStringProperty("data.text").future;',
-                      json:
-                          r'{"data": {"text": "Quote: \"Hello\", Tab:\t, Newline:\n"}}',
-                      interval: _interval,
-                      chunkSize: _chunkSize,
-                      allowExpansion: _allowExpansion,
-                      startImmediately: _startOnRebuild,
-                      builder: (parser) =>
-                          _EdgeCaseSpecialCharsDemo(parser: parser),
-                    ),
-                    const SizedBox(height: 100), // Space for FAB
-                  ],
-                ),
+                interval: _interval,
+                chunkSize: _chunkSize,
+                allowExpansion: _allowExpansion,
+                startImmediately: _startOnRebuild,
+                builder: (parser) => _EdgeCaseMultilineDemo(parser: parser),
               ),
-              ResizableChild(
-                  divider: ResizableDivider(color: Colors.grey[100]),
-                  child: Center()),
+              const SizedBox(height: 32),
+              _DemoItem(
+                key: ValueKey('demo10_$_streamKey'),
+                title: 'Edge Case - Special Characters',
+                code: 'await parser.getStringProperty("data.text").future;',
+                json:
+                    r'{"data": {"text": "Quote: \"Hello\", Tab:\t, Newline:\n"}}',
+                interval: _interval,
+                chunkSize: _chunkSize,
+                allowExpansion: _allowExpansion,
+                startImmediately: _startOnRebuild,
+                builder: (parser) => _EdgeCaseSpecialCharsDemo(parser: parser),
+              ),
+              const SizedBox(height: 100), // Space for FAB
             ],
           ),
         ),
@@ -508,7 +523,7 @@ class _DemoItemState extends State<_DemoItem> {
     );
 
     return Card(
-      elevation: 2,
+      color: Colors.transparent,
       child: widget.allowExpansion
           ? cardContent
           : SizedBox(
@@ -805,12 +820,10 @@ class _ListOnElementObjectsDemoState extends State<_ListOnElementObjectsDemo> {
       spacing: 12,
       runSpacing: 12,
       children: [
-        ..._items.asMap().entries.map((entry) {
-          final product = entry.value;
-          final index = entry.key;
+        ..._items.map((product) {
           return Chip(
             label: Text(
-              '[$index] $product',
+              product.toString(),
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

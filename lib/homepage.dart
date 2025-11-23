@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:json_stream_parser_demo/pages/api_demo/api_demo_page.dart';
+import 'package:json_stream_parser_demo/pages/readme_demos/readme_demos_page.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class Homepage extends StatefulWidget {
@@ -119,6 +120,28 @@ class _HomepageState extends State<Homepage> {
     final isMobile = ResponsiveBreakpoints.of(context).isMobile;
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('JSON Stream Parser Demo'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.list_alt),
+            tooltip: 'README Demos',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ReadmeDemosPage()),
+              );
+            },
+          ),
+          IconButton(
+            key: ValueKey<bool>(widget.isDarkMode),
+            onPressed: widget.onThemeToggle,
+            icon: Icon(
+              widget.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+            ),
+          ),
+        ],
+      ),
       body: SizedBox.expand(
         child: Padding(
           padding: EdgeInsets.all(isMobile ? 8.0 : 32.0),
